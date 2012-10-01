@@ -9,10 +9,19 @@ from ooredis.client import connect
 from ooredis.key.helper import format_key
 from ooredis.type_case import JsonTypeCase
 
+redis_dbs = {
+    "test":{
+        "host":'127.0.0.1',
+        "db":0,
+        }
+    }
+
+
+
 class TestDict(unittest.TestCase):
     
     def setUp(self):
-        connect()
+        connect("test",**redis_dbs["test"])
 
         self.redispy = redis.Redis()
         self.redispy.flushdb()
@@ -21,7 +30,7 @@ class TestDict(unittest.TestCase):
         self.key = 'key'
         self.value = [1, 2, 3]
 
-        self.d = Dict(self.name, type_case=JsonTypeCase)
+        self.d = Dict(self.name,db_key="test", type_case=JsonTypeCase)
 
     def tearDown(self): 
         self.redispy.flushdb()

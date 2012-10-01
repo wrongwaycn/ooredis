@@ -13,12 +13,14 @@ class BaseKey:
     所有其他 Key 对象的基类，保存了 key 名，客户端以及 TypeCase 。
     """
 
-    def __init__(self, name, client=None, type_case=GenericTypeCase):
+    ## add db
+    def __init__(self, name, db_key, client=None, type_case=GenericTypeCase):
         """ 
         指定 key 名和客户端，以及 TypeCase 。
 
         Args:
             name: Redis key 的名字
+            db: 数据库的名称
             client: 客户端，默认为全局客户端
             type_case: 类型转换类
 
@@ -32,7 +34,7 @@ class BaseKey:
             None
         """
         self.name = name
-        self._client = client or get_client()
+        self._client = client or get_client(db_key)
         self._encode = type_case.encode
         self._decode = type_case.decode
 

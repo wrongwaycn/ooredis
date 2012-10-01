@@ -8,17 +8,24 @@ from ooredis.client import connect
 from ooredis.key.helper import format_key
 from ooredis.type_case import JsonTypeCase
 from ooredis.key.sorted_set import SortedSet
+
+redis_dbs = {
+    "test":{
+        "host":'127.0.0.1',
+        "db":0,
+        }
+    }
     
 class TestSortedSet(unittest.TestCase):
 
     def setUp(self):
-        connect()
+        connect("test",**redis_dbs["test"])
 
         self.redispy = redis.Redis()
         self.redispy.flushdb()
 
-        self.s = SortedSet('sorted_set', type_case=JsonTypeCase)
-        self.another = SortedSet('another', type_case=JsonTypeCase)
+        self.s = SortedSet('sorted_set',db_key="test", type_case=JsonTypeCase)
+        self.another = SortedSet('another',db_key="test", type_case=JsonTypeCase)
 
         self.element = {'k':'v'}
         self.score = 10086

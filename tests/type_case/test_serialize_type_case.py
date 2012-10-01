@@ -1,7 +1,7 @@
 # coding: utf-8
 
 import pickle
-
+import unittest
 from unittest import TestCase
 from ooredis.type_case import SerializeTypeCase
 
@@ -32,3 +32,6 @@ class TestSerializeTypeCase(TestCase):
 
     def test_decode_RETURN_CLASS(self):
         assert isinstance(SerializeTypeCase.decode(SerializeTypeCase.encode(self.c)), SerializeAbleClass)
+
+if __name__ == "__main__":
+    unittest.main()

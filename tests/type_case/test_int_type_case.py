@@ -1,5 +1,6 @@
 # coding: utf-8
 
+import unittest
 from unittest import TestCase
 from ooredis.type_case import IntTypeCase
 
@@ -37,3 +38,6 @@ class TestInt(TestCase):
     def test_decode_RAISE_when_INPUT_WRONG_TYPE(self):
         with self.assertRaises(TypeError):
             IntTypeCase.decode(self.wrong_type_input)
+
+if __name__ == "__main__":
+    unittest.main()

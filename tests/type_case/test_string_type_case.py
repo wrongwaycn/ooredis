@@ -1,5 +1,5 @@
 # coding: utf-8
-
+import unittest
 from unittest import TestCase
 from ooredis.type_case import StringTypeCase
 
@@ -33,3 +33,7 @@ class TestString(TestCase):
 
     def test_decode_RETURN_UNICODE(self):
         assert StringTypeCase.decode(self.u) == self.u
+
+
+if __name__ == "__main__":
+    unittest.main()

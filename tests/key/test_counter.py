@@ -7,10 +7,17 @@ from ooredis.client import connect
 from ooredis.key.helper import format_key
 from ooredis.key.counter import Counter
 
+redis_dbs = {
+    "test":{
+        "host":'127.0.0.1',
+        "db":0,
+        }
+    }
+
 class TestCounter(unittest.TestCase):
     
     def setUp(self):
-        connect()
+        connect("test",**redis_dbs["test"])
 
         self.redispy = redis.Redis()
         self.redispy.flushdb()
@@ -22,7 +29,7 @@ class TestCounter(unittest.TestCase):
         self.name = 'counter'
         self.value = 10086
 
-        self.counter = Counter(self.name)
+        self.counter = Counter(self.name,"test")
 
     def tearDown(self):
         self.redispy.flushdb()
@@ -195,3 +202,6 @@ class TestCounter(unittest.TestCase):
     def test_getset_RAISE_when_INPUT_WRONG_TYPE(self):
         with self.assertRaises(TypeError):
             self.counter.getset(self.str)
+
+if __name__ == "__main__":
+    unittest.main()

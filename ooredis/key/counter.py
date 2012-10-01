@@ -12,6 +12,7 @@ from common_key_property_mixin import CommonKeyPropertyMixin
 from set_and_get_op_mixin import SetAndGetOpMixin
 from helper import format_key, wrap_exception
 
+## add db
 class Counter(BaseKey, CommonKeyPropertyMixin, SetAndGetOpMixin):
 
     """
@@ -20,12 +21,12 @@ class Counter(BaseKey, CommonKeyPropertyMixin, SetAndGetOpMixin):
     注意当 Key 对象为空时，get/getset 的返回值为 None 。
     """
 
-    def __init__(self, name, client=None, type_case=IntTypeCase):
+    def __init__(self, name, db_key, client=None, type_case=IntTypeCase):
         """ 
         初始化一个 Counter 类实例，
         使用 IntTypeCase 作为默认 type case 。
         """
-        super(Counter, self).__init__(name=name, client=client, type_case=type_case)
+        super(Counter, self).__init__(name=name, db_key=db_key, client=client, type_case=type_case)
 
 
     def __repr__(self):

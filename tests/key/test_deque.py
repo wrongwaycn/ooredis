@@ -1,11 +1,21 @@
 # coding: utf-8
 
 from redis import Redis
-from ooredis import Deque
+from ooredis import connect,Deque
+import unittest
 from unittest import TestCase
 
 from ooredis.key.helper import format_key
 from ooredis.type_case import JsonTypeCase
+
+redis_dbs = {
+    "test":{
+        "host":'127.0.0.1',
+        "db":0,
+        }
+    }
+
+connect("test",**redis_dbs["test"])
 
 class TestDeque(TestCase):
 
@@ -17,7 +27,7 @@ class TestDeque(TestCase):
 
         self.multi_item = [123, 321, 231]
 
-        self.d = Deque('deque', type_case=JsonTypeCase)
+        self.d = Deque('deque',db_key="test", type_case=JsonTypeCase)
    
     def tearDown(self):
         self.redispy.flushdb()
@@ -452,3 +462,6 @@ class TestDeque(TestCase):
         with self.assertRaises(TypeError):
             self.set_wrong_type(self.d)
             self.d[0] = self.item
+            
+if __name__ == "__main__":
+    unittest.main()

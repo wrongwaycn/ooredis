@@ -13,10 +13,18 @@ from ooredis.key.set_and_get_op_mixin import SetAndGetOpMixin
 class C(BaseKey, CommonKeyPropertyMixin, SetAndGetOpMixin):
     pass
 
+redis_dbs = {
+    "test":{
+        "host":'127.0.0.1',
+        "db":0,
+        }
+    }
+
+
 class TestSetAndGetOpMixin(unittest.TestCase):
 
     def setUp(self):
-        connect()
+        connect("test",**redis_dbs["test"])
 
         self.redispy = redis.Redis()
         self.redispy.flushdb()
@@ -25,7 +33,7 @@ class TestSetAndGetOpMixin(unittest.TestCase):
         self.value = 3.14
 
         # 使用 FloatTypeCase 是为了测试 TypeCase
-        self.key = C(self.name, type_case=FloatTypeCase)
+        self.key = C(self.name,"test", type_case=FloatTypeCase)
 
     def tearDown(self):
         self.redispy.flushdb()
@@ -163,3 +171,6 @@ class TestSetAndGetOpMixin(unittest.TestCase):
         with self.assertRaises(TypeError):
             self.set_wrong_type()
             self.key.getset(self.value)
+
+if __name__ == "__main__":
+    unittest.main()

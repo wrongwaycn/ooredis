@@ -8,10 +8,17 @@ from ooredis import String
 from ooredis.client import connect
 from ooredis.key.helper import format_key
 
+redis_dbs = {
+    "test":{
+        "host":'127.0.0.1',
+        "db":0,
+        }
+    }
+
 class TestString(unittest.TestCase):
 
     def setUp(self):
-        connect()
+        connect("test",**redis_dbs["test"])
 
         self.redispy = redis.Redis()
         self.redispy.flushdb()
@@ -19,7 +26,7 @@ class TestString(unittest.TestCase):
         self.name = 'pi'
         self.value = 3.14
 
-        self.key = String(self.name)
+        self.key = String(self.name,db_key="test")
 
     def tearDown(self):
         self.redispy.flushdb()
@@ -34,3 +41,7 @@ class TestString(unittest.TestCase):
             repr(self.key),
             format_key(self.key, self.name, self.value)
         )
+
+
+if __name__ == "__main__":
+    unittest.main()

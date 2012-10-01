@@ -6,12 +6,14 @@ import unittest
 from ooredis.key.base_key import BaseKey
 from ooredis.key.helper import format_key, wrap_exception
 
+
+
 class TestHelper(unittest.TestCase):
 
     def setUp(self):
         self.name = "name"
         self.value = "value"
-        self.key = BaseKey(self.name)
+        self.key = BaseKey(self.name,db_key="test")
 
 
     # format_key

@@ -9,20 +9,27 @@ from ooredis.const import REDIS_TYPE
 from ooredis.type_case import GenericTypeCase
 from ooredis.client import connect, get_client
 
+redis_dbs = {
+    "test":{
+        "host":'127.0.0.1',
+        "db":0,
+        }
+    }
+
 class KeyWithProperty(BaseKey, CommonKeyPropertyMixin):
     pass
 
 class TestCommonKeyPropertyMixin(unittest.TestCase):
     
     def setUp(self):
-        connect()
+        connect("test",**redis_dbs["test"])
     
         self.name = "name"
         self.value = "value"
 
-        self.key = KeyWithProperty(self.name)
+        self.key = KeyWithProperty(self.name,"test")
 
-        self.redispy = redis.Redis()
+        self.redispy = redis.Redis(**redis_dbs["test"])
         self.redispy.flushdb()
 
     def tearDown(self):
@@ -35,35 +42,35 @@ class TestCommonKeyPropertyMixin(unittest.TestCase):
         # string
         self.redispy.set('string', 'string')
         self.assertEqual(
-            KeyWithProperty('string')._represent,
+            KeyWithProperty('string',"test")._represent,
             REDIS_TYPE['string']
         )
 
         # list
         self.redispy.lpush('list', 'itme')
         self.assertEqual(
-            KeyWithProperty('list')._represent,
+            KeyWithProperty('list',"test")._represent,
             REDIS_TYPE['list']
         )
 
         # set
         self.redispy.sadd('set', 'element')
         self.assertEqual(
-            KeyWithProperty('set')._represent,
+            KeyWithProperty('set',"test")._represent,
             REDIS_TYPE['set']
         )
 
         # sorted set
         self.redispy.zadd('sorted_set', 'value', 30)
         self.assertEqual(
-            KeyWithProperty('sorted_set')._represent,
+            KeyWithProperty('sorted_set',"test")._represent,
             REDIS_TYPE['sorted_set']
         )
 
         # hash
         self.redispy.hset('hash', 'field', 'value')
         self.assertEqual(
-            KeyWithProperty('hash')._represent,
+            KeyWithProperty('hash',"test")._represent,
             REDIS_TYPE['hash']
         )
 
@@ -72,7 +79,7 @@ class TestCommonKeyPropertyMixin(unittest.TestCase):
             self.redispy.exists('not_exists_key')
         )
         self.assertEqual(
-            KeyWithProperty('not_exists_key')._represent,
+            KeyWithProperty('not_exists_key',"test")._represent,
             REDIS_TYPE['not_exists']
         )
 

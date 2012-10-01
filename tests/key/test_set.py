@@ -9,18 +9,26 @@ from ooredis.client import connect
 from ooredis.key.set import Set
 from ooredis.key.helper import format_key
 from ooredis.type_case import FloatTypeCase
+
+redis_dbs = {
+    "test":{
+        "host":'127.0.0.1',
+        "db":0,
+        }
+    }
+
     
 class TestSet(unittest.TestCase):
 
     def setUp(self):
-        connect()
+        connect("test",**redis_dbs["test"])
 
         self.redispy = redis.Redis()
         self.redispy.flushdb()
 
-        self.s = Set('set', type_case=FloatTypeCase)
-        self.another = Set('another', type_case=FloatTypeCase)
-        self.third = Set('third', type_case=FloatTypeCase)
+        self.s = Set('set', db_key="test", type_case=FloatTypeCase)
+        self.another = Set('another', db_key="test", type_case=FloatTypeCase)
+        self.third = Set('third',db_key="test", type_case=FloatTypeCase)
 
         self.element = 3.14
 

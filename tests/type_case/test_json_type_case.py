@@ -1,7 +1,7 @@
 # coding: utf-8
 
 import json
-
+import unittest
 from unittest import TestCase
 from ooredis.type_case import JsonTypeCase
 
@@ -35,3 +35,6 @@ class TestJson(TestCase):
     def test_decode_RAISE_when_INPUT_WRONG_TYPE(self):
         with self.assertRaises(TypeError):
             JsonTypeCase.decode(self.wrong_type_input)
+
+if __name__ == "__main__":
+    unittest.main()
